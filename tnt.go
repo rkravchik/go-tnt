@@ -16,6 +16,7 @@ const (
 	requestTypeUpdate = 19
 	requestTypeDelete = 21
 	requestTypeCall   = 22
+	requestTypePing   = 65280
 )
 
 type Query interface {
@@ -131,6 +132,10 @@ type Call struct {
 	Tuple       Tuple
 	ReturnTuple bool
 }
+
+type Ping struct{}
+
+var ping = new(Ping)
 
 var _ Query = (*Select)(nil)
 var _ Query = (*Insert)(nil)

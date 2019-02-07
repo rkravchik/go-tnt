@@ -6,7 +6,27 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
+
+func TestPing(t *testing.T) {
+	if testing.Short() {
+		t.Skip("this test needs tarantool_box")
+	}
+	require := require.New(t)
+
+	box, err := NewBox("")
+	require.NoError(err)
+	defer box.Close()
+
+	conn, err := Connect(box.Listen(), nil)
+	require.NoError(err)
+	defer conn.Close()
+
+	res, err := conn.Execute(&Ping{})
+	require.NoError(err)
+	assert.Nil(t, res)
+}
 
 func TestSelect(t *testing.T) {
 	assert := assert.New(t)

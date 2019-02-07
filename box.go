@@ -244,6 +244,17 @@ func (box *Box) Snapshot() (string, error) {
 	return "", ErrSnapshotNotFound
 }
 
+// HealthCheck the Box.
+func (box *Box) HealthCheck() bool {
+	conn, err := Connect(box.Listen(), nil)
+	if err != nil {
+		return false
+	}
+	defer conn.Close()
+	_, err = conn.Execute(ping)
+	return err == nil
+}
+
 // Close Box instance.
 func (box *Box) Close() {
 	box.stopOnce.Do(func() {

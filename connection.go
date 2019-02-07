@@ -201,6 +201,15 @@ READER_LOOP:
 		bodyLen = UnpackInt(header[4:8])
 		requestID = UnpackInt(header[8:12])
 
+		if bodyLen == 0 {
+			// PING response
+			req = conn.requests.Pop(requestID)
+			if req != nil {
+				req.replyChan <- emptyResponse
+			}
+			continue
+		}
+
 		body := make([]byte, bodyLen)
 
 		_, err = io.ReadAtLeast(r, body, int(bodyLen))

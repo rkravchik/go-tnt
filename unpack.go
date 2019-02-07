@@ -76,6 +76,8 @@ func unpackTuple(p []byte) (Tuple, error) {
 	return tuple, nil
 }
 
+var emptyResponse = &Response{}
+
 func UnpackBody(body []byte) (*Response, error) {
 	var err error
 

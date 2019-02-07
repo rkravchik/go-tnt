@@ -396,3 +396,12 @@ func (q *Call) Pack(requestID uint32, defaultSpace uint32) ([]byte, error) {
 
 	return data, nil
 }
+
+// Pack implements Query interface.
+func (q *Ping) Pack(requestID, defaultSpace uint32) ([]byte, error) {
+	data := make([]byte, 12)
+	binary.LittleEndian.PutUint32(data, requestTypePing)
+	binary.LittleEndian.PutUint32(data[4:], 0)
+	binary.LittleEndian.PutUint32(data[8:], requestID)
+	return data, nil
+}
